@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+
+        <nav>
+            <i class="fa-solid fa-wind"></i>
+            <ul>
+                <li>Home</li>
+                <li>Current Weather</li>
+                <li>Extended Forecast</li>
+                <li>Contact Us</li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- retrive weather data from an api -->
+    <!-- location based forecast -->
+     <div id="location-based">
+        <h1>Location:</h1>
+     </div>
+    <!-- current weather condition -->
+    <div id="current-weather">
+
+    </div>
+    <!-- extended forcast -->
+    <div id="extended-forecast">
+        
+    </div>
+
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const apiKey = "2f43aef7f30a0de2d9f13735299e6009";
+
+                    // URLs for current weather and forecast
+                    const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+                    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+
+                    // Fetch current weather
+                    fetch(currentWeatherUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Current Weather Data:", data);
+                            // Process and display current weather data
+                        })
+                        .catch(error => console.error("Error fetching current weather data:", error));
+
+                    // Fetch forecast data
+                    fetch(forecastUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("Forecast Data:", data);
+                            // Process and display forecast data
+                        })
+                        .catch(error => console.error("Error fetching forecast data:", error));
+                },
+                function (error) {
+                    console.error("Error Code = " + error.code + " - " + error.message);
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+        }
+
+
+    </script>
+</body>
+
+</html>
