@@ -3,7 +3,7 @@ let lat = "";
 let log = "";
 // get the elements from html doc
 const current = document.getElementById("current")
-
+let searchString=""
 // current location 
 navigator.geolocation.getCurrentPosition(x=>{
     lat = x.coords.latitude
@@ -29,8 +29,6 @@ navigator.geolocation.getCurrentPosition(x=>{
     getExtendedData() 
 
 })
-
-
 
 // display
 function displayCurrent(x){
@@ -59,13 +57,10 @@ function displayCurrent(x){
 
 }
 
-
-
-
 function displayExtendedData(data){
-    console.log(data)
+
    let extended = document.getElementById("Extended")
-   console.log()
+
     for(let i = 0; i<data.length; i++){
        const icon = data[i].weather[0].icon
        const weather = data[i].weather[0].main
@@ -96,3 +91,62 @@ function displayExtendedData(data){
 
 // try local storage
 
+// localStorage.setItem('username', 'JohnDoe');
+// const username = localStorage.getItem('username');
+// console.log(username);
+
+// localStorage.removeItem('username');
+
+// localStorage.clear();
+
+// get and write the input into local storage
+let searchResults = document.getElementById('search-results');
+let button = document.querySelector('button[type="submit"]');
+
+// CREATING an array to store all data searched we need to first retrieve and then write
+let history = JSON.parse(localStorage.getItem('history')) || [];
+
+button.addEventListener('click', () => {
+    searchString = document.getElementById("searchString").value.trim();
+    if (searchString) {
+        history.push(searchString);
+        fetchWeatherByCity(searchString);
+        localStorage.setItem('history', JSON.stringify(history));
+    }
+});
+
+// Display data by city name
+function fetchWeatherByCity(city) {
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apikey}&units=metric`;
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.cod === "200") {
+                console.log("Sending data to display");
+                displayWeather(data);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching weather data:', error));
+}
+
+function displayWeather(params) {
+    // Clear previous search result
+    searchResults.innerHTML = '';
+
+    let city_temp = params.list[0].main.temp;
+    let city_humid = params.list[0].main.humidity;
+    let city_icon = params.list[0].weather[0].icon;
+    let desc = params.list[0].weather[0].description;
+
+    let searchedData = document.createElement("div");
+    searchedData.innerHTML = `
+        <h2>${searchString}</h2>
+        <p class="text-lg">${city_temp} °C</p>
+        <p class="text-gray-600">${desc}</p>
+        <img src="https://openweathermap.org/img/wn/${city_icon}@2x.png" class="w-16 h-16 mx-auto">
+        <p class="text-gray-600">Humidity: ${city_humid}%</p>
+    `;
+    searchResults.append(searchedData);
+}

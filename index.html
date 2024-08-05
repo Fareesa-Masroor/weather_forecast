@@ -29,34 +29,19 @@
         <div id="day"></div>
      </div>
      <!-- search -->
-      <div id="search">
-        <h2>Enter a City Name</h2>
-        <input type="text">
-        <button type="submit">Search</button>
-        <hr> 
-        <p>or</p>
-        <button type="button">Use Current Location</button>
-      </div>
+
+     <div id="search">
+  <h2>Enter a City Name</h2>
+  <input id="searchString" type="text">
+  <button type="submit">Search</button>
+  <hr> 
+  <p>or</p>
+  <button type="button">Use Current Location</button>
+  <div id="search-results"></div> <!-- Container for the search results -->
+</div>
+
       <div id="demo"></div>
       <script src="script.js"></script>
-      <script>
-        const x = document.getElementById("demo");
-        navigator.geolocation.getCurrentPosition(x=>{
-            lat = x.coords.latitude
-            lon = x.coords.longitude
-        })
-        function getLocation() {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-          } else {
-            x.innerHTML = "Geolocation is not supported by this browser.";
-          }
-        }
-        
-        function showPosition(position) {
-          x.innerHTML = "Latitude: " + position.coords.latitude +
-          "<br>Longitude: " + position.coords.longitude;
-        }
-        </script>
+   
 </body>
 </html>
