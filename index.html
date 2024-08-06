@@ -3,45 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>weather Data</title>
+    <title>Weather App</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <!-- navbar -->
-    <nav>
-        <i></i>
-        <ul>
-            <li>Home</li>
-            <li>Current Weather Location</li>
-            <li>Extended Weather Data</li>
-        </ul>
-    </nav>
-    <!-- current weather data -->
-    <div id="current">
-        <h2>Wether based on your current location</h2>
-    </div>
-    <!-- 5-day forecast -->
-     <div id="Extended">
-        <h2>Weather Forecast for coming 5 days</h2>
-        <div id="day"></div>
-        <div id="day"></div>
-        <div id="day"></div>
-        <div id="day"></div>
-        <div id="day"></div>
-     </div>
-     <!-- search -->
+<body class="bg-yellow-100 font-sans">
 
-     <div id="search">
-  <h2>Enter a City Name</h2>
-  <input id="searchString" type="text">
-  <button type="submit">Search</button>
-  <hr> 
-  <p>or</p>
-  <button type="button">Use Current Location</button>
-  <div id="search-results"></div> <!-- Container for the search results -->
+<div class="bg-cover bg-center bg-[url('/assets/bg.jpg')] p-6">
+    <div class="">
+        <!-- Sidebar -->
+        <div class=" bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center space-x-2 mb-6">
+                <input type="text" placeholder="Search for places ..." class="w-full p-2 border rounded-lg" id="searchString">
+                <button type="submit" id="searchButton" class="bg-gray-200 p-2 rounded-lg">Search</button>
+            </div>
+            <div class="mb-6">
+                <select id="recentCities" class="w-full p-2 border rounded-lg hidden">
+                    <option value="" disabled selected>Select a recently searched city</option>
+                </select>
+            </div>
+            <div id="searchResults" class="p-4 bg-blue-100 shadow-lg rounded-lg hidden">
+                <!-- Search Results -->
+            </div>
+            <div id="current" class="p-4 bg-blue-100 shadow-lg rounded-lg text-center">
+                <!-- Current Content -->
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="w ml-6">
+            <div class="flex justify-center items-center mb-6">
+                <h1 class="font-bold text-2xl p-5">Five Day Forecast</h1>
+            </div>
+            <div id="Extended" class="text-center flex flex-wrap justify-center items-center space-x-4 space-y-4">
+                <!-- Forecast cards will be inserted here -->
+            </div>
+        </div>
+    </div>
 </div>
 
-      <div id="demo"></div>
-      <script src="script.js"></script>
-   
+<script src="script.js"></script>
 </body>
 </html>
