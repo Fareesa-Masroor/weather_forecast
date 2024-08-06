@@ -5,6 +5,7 @@
 
 ![Weather Forecast Background](https://github.com/Fareesa-Masroor/weather_forecast/blob/main/assets/desktop.png)
 
+# The iPad mini and iPhone Se images are in the Assets folder
 ## Project Setup
 
 1. Clone the repository:
