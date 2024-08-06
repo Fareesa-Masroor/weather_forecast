@@ -41,3 +41,7 @@ The application uses the OpenWeatherMap API. Replace the `apikey` variable in `s
 
 ```javascript
 const apikey = "YOUR_API_KEY";
+
+
+
+![Weather Forecast Background](https://github.com/Fareesa-Masroor/weather_forecast/blob/main/assets/bg.jpg)
