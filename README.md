@@ -1,5 +1,7 @@
 # Weather Forecast Application
 link for the project https://fareesa-masroor.github.io/weather_forecast/
+![Weather Forecast Background](https://github.com/Fareesa-Masroor/weather_forecast/blob/main/assets/bg.jpg)
+
 ## Project Setup
 
 1. Clone the repository:
@@ -42,6 +44,3 @@ The application uses the OpenWeatherMap API. Replace the `apikey` variable in `s
 ```javascript
 const apikey = "YOUR_API_KEY";
 
-
-
-![Weather Forecast Background](https://github.com/Fareesa-Masroor/weather_forecast/blob/main/assets/bg.jpg)
