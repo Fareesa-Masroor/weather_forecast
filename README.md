@@ -1,6 +1,9 @@
 # Weather Forecast Application
-link for the project https://fareesa-masroor.github.io/weather_forecast/
-![Weather Forecast Background](https://github.com/Fareesa-Masroor/weather_forecast/blob/main/assets/bg.jpg)
+
+🔗link for the project https://fareesa-masroor.github.io/weather_forecast/
+
+
+![Weather Forecast Background](https://github.com/Fareesa-Masroor/weather_forecast/blob/main/assets/desktop.png)
 
 ## Project Setup
 
