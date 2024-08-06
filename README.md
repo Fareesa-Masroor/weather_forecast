@@ -1,5 +1,5 @@
 # Weather Forecast Application
-
+link for the project https://fareesa-masroor.github.io/weather_forecast/
 ## Project Setup
 
 1. Clone the repository:
