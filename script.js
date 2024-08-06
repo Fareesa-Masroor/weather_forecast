@@ -7,7 +7,7 @@ let searchString = "";
 
 const recentCities = document.getElementById("recentCities");
 
-// current location 
+// Get current location using Geolocation API
 navigator.geolocation.getCurrentPosition(x => {
     lat = x.coords.latitude;
     log = x.coords.longitude;
@@ -15,18 +15,20 @@ navigator.geolocation.getCurrentPosition(x => {
     getExtendedData();
 });
 
+// Fetch current weather data for the current location
 const getCurrentData = () => {
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${log}&appid=${apikey}`)
-        .then(resp => resp.json())
-        .then(res => displayCurrent(res));
+        .then(response => response.json())
+        .then(data => displayCurrent(data))
+        .catch(error => displayError('Error fetching current weather data: ' + error.message));
 };
-
+// Fetch extended weather forecast data for the current location
 const getExtendedData = () => {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${log}&appid=${apikey}`)
-        .then(resp => resp.json())
-        .then(res => displayExtendedData(res.list.filter(i => i.dt_txt.includes("12:00:00"))));
+        .then(response => response.json())
+        .then(data => displayExtendedData(data.list.filter(item => item.dt_txt.includes("12:00:00"))))
+        .catch(error => displayError('Error fetching extended forecast data: ' + error.message));
 };
-
 // Fetch and display weather by city name
 const fetchWeatherByCity = (city) => {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apikey}&units=metric`)
@@ -35,13 +37,12 @@ const fetchWeatherByCity = (city) => {
             if (data.cod === "200") {
                 displayWeather(data);
             } else {
-                alert(data.message);
+                displayError(data.message);
             }
         })
-        .catch(error => console.error('Error fetching weather data:', error));
+        .catch(error => displayError('Error fetching weather data: ' + error.message));
 };
-
-// Update the dropdown menu
+// Update the dropdown menu with recently searched cities
 const updateDropdown = () => {
     recentCities.innerHTML = '<option value="" disabled selected>Select a recently searched city</option>';
     history.forEach(city => {
@@ -63,6 +64,8 @@ document.getElementById('searchButton').addEventListener('click', () => {
         fetchWeatherByCity(searchString);
         localStorage.setItem('history', JSON.stringify(history));
         updateDropdown();
+    } else {
+        displayError('Please enter a city name.');
     }
 });
 
@@ -72,12 +75,11 @@ recentCities.addEventListener('change', (event) => {
     fetchWeatherByCity(city);
 });
 
-// Display functions (current weather and extended forecast)
+// Display current weather data
 function displayCurrent(x) {
-    const current = document.getElementById("current");
     current.innerHTML = ""; // Clear previous data
     let cityName = x.name;
-    let temp = (x.main.temp - 273).toFixed(0);
+    let temp = (x.main.temp - 273).toFixed(0); // Convert from Kelvin to Celsius
     let windSpeed = x.wind.speed;
     let humidity = x.main.humidity;
     let description = x.weather[0].description;
@@ -113,34 +115,35 @@ function displayCurrent(x) {
     current.appendChild(wind);
 }
 
+// Display extended weather forecast data
 function displayExtendedData(data) {
     let extended = document.getElementById("Extended");
 
     for (let i = 0; i < data.length; i++) {
         const icon = data[i].weather[0].icon;
         const weather = data[i].weather[0].main;
-        const date = data[i].dt_txt.slice(0,10)
-        console.log(data[i].dt_txt.slice(0,10))
-        // card
-        let card = document.createElement("div");
-        card.className = '';
-        card.innerHTML = `
-        <h1 class="text-xl bold" >${date}</h1>
-        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${weather}" class="w-16 h-16 mx-auto">`
+        const date = data[i].dt_txt.slice(0,10);
 
-        // temp
+        // Create forecast card
+        let card = document.createElement("div");
+        card.className = 'bg-white p-4 rounded-lg shadow-md';
+        card.innerHTML = `
+        <h1 class="text-xl bold">${date}</h1>
+        <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${weather}" class="w-16 h-16 mx-auto">`;
+
+        // Temperature
         let temp = document.createElement("p");
-        temp.innerText = "Temperature " + (data[i].main.temp - 273).toFixed(2);
+        temp.innerText = "Temperature: " + (data[i].main.temp - 273).toFixed(2) + "°C";
         card.appendChild(temp);
 
-        // humidity
+        // Humidity
         let humid = document.createElement("p");
-        humid.innerText = "Humidity " + (data[i].main.humidity);
+        humid.innerText = "Humidity: " + data[i].main.humidity + "%";
         card.appendChild(humid);
 
-        // wind
+        // Wind speed
         let wind = document.createElement("p");
-        wind.innerText = "Wind Speed " + (data[i].wind.speed);
+        wind.innerText = "Wind Speed: " + data[i].wind.speed + " km/h";
         card.appendChild(wind);
 
         extended.appendChild(card);
@@ -165,11 +168,11 @@ recentCities.addEventListener('change', function() {
     document.getElementById('searchResults').classList.add('hidden');
 });
 
-// Display weather function (existing)
+// Display weather for searched city
 function displayWeather(params) {
     let searchResults = document.getElementById("searchResults");
     searchResults.className = 'text-center p-4';
-    console.log(params);
+
     // Clear previous search result
     searchResults.innerHTML = '';
 
@@ -189,3 +192,11 @@ function displayWeather(params) {
     `;
     searchResults.append(searchedData);
 }
+
+// Display error messages within the UI
+const displayError = (message) => {
+    const errorContainer = document.createElement('div');
+    errorContainer.className = 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2';
+    errorContainer.innerHTML = `<strong class="font-bold">Error:</strong> <span class="block sm:inline">${message}</span>`;
+    document.getElementById('searchResults').appendChild(errorContainer);
+};
